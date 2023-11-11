@@ -13,5 +13,14 @@ public class TestInfo {
     private Set<String> tags;
     private boolean isDisabled;
 
+    @Override
+    public String toString() {
+        return testClass + ';' +
+                testMethod + ';' +
+                filePath + ';' +
+                tags + ';' +
+                isDisabled;
+    }
+
 }
 
