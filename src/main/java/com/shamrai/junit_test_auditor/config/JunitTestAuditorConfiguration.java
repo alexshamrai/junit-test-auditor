@@ -8,19 +8,21 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Set;
+
 @Configuration
 @EnableConfigurationProperties
 public class JunitTestAuditorConfiguration {
 
     @Bean
     public TestInfoAggregator testInfoAggregator(TestsParser testsParser,
-                                                 @Value("/Users/oshamrai/super-tests") String projectPath) {
+                                                 @Value("${test.project.path}") String projectPath) {
         return new TestInfoAggregator(testsParser, projectPath);
     }
 
     @Bean
-    public TestsParser testsParser() {
-        return new TestsParser();
+    public TestsParser testsParser(@Value("${excluded.tags}") Set<String> excludedTags) {
+        return new TestsParser(excludedTags);
     }
 
     @Bean

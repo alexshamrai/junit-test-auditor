@@ -6,12 +6,12 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.shamrai.junit_test_auditor.model.TestInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.substringBetween;
 
 @Slf4j
+@RequiredArgsConstructor
 public class TestsParser {
 
     private static final String TESTS_PATH = "src/test/java";
@@ -29,6 +30,8 @@ public class TestsParser {
     private static final String TEST = "@Test";
     private static final String TAG = "@Tag";
 
+    private final Set<String> excludedTags;
+
     public List<TestInfo> listMethodCalls(File projectDir) {
 
         List<TestInfo> testsInfo = new ArrayList<>();
@@ -36,7 +39,7 @@ public class TestsParser {
         new DirExplorer((level, path, file) -> path.endsWith(".java") && path.contains(TESTS_PATH), (level, path, file) -> {
 
             try {
-                new VoidVisitorAdapter<Object>() {
+                new VoidVisitorAdapter<>() {
                     @Override
                     public void visit(MethodDeclaration testMethod, Object arg) {
                         super.visit(testMethod, arg);
@@ -46,7 +49,7 @@ public class TestsParser {
                         }
 
                         var testClass = (ClassOrInterfaceDeclaration) testMethod.getParentNode().get();
-                        var tags = getTags(testClass, testMethod);
+                        var tags = filterExcludedTags(getTags(testClass, testMethod));
                         var disabledTag = getDisabledTag(testMethod);
                         var test = TestInfo.builder()
                                 .filePath(path)
@@ -117,5 +120,11 @@ public class TestsParser {
 
     private List<String> getChildNodes(Node node) {
         return node.getChildNodes().stream().map(Node::toString).toList();
+    }
+
+    private Set<String> filterExcludedTags(Set<String> tags) {
+        return tags.stream()
+                .filter(tag -> excludedTags.stream().noneMatch(tag::contains))
+                .collect(Collectors.toSet());
     }
 }
