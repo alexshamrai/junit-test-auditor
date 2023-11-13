@@ -23,7 +23,7 @@ public class ServiceTestsInfo {
                 testsToString() + ";" +
                 totalTests + ";" +
                 disabledTests + ";" +
-                disabledPercentage;
+                String.format("%.0f", disabledPercentage);
     }
 
     private String testsToString() {
