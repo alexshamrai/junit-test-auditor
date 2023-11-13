@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 
+import static com.shamrai.junit_test_auditor.utils.TestInfoAnalyser.buildServiceTestsInfo;
+import static com.shamrai.junit_test_auditor.utils.TestInfoAnalyser.calculateDisabledTests;
+
 @SpringBootApplication
 public class JunitTestAuditorApplication implements CommandLineRunner {
 
@@ -24,6 +27,9 @@ public class JunitTestAuditorApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws IOException {
         var tests = testInfoAggregator.getDisabledTestsWithOwners();
-        fileWriter.writeNotificationsInfo(tests);
+        fileWriter.writeTestInfo(tests);
+        System.out.println(calculateDisabledTests(tests));
+        var serviceTests = buildServiceTestsInfo(tests);
+        fileWriter.writeServiceTestsInfo(serviceTests);
     }
 }

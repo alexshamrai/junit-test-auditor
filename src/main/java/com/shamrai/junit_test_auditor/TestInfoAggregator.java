@@ -5,7 +5,6 @@ import com.shamrai.junit_test_auditor.parser.TestsParser;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
