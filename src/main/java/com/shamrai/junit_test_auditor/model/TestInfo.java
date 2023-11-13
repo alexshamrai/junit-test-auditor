@@ -22,5 +22,9 @@ public class TestInfo {
                 isDisabled;
     }
 
+    public String shortenToString() {
+        String shortenedPath = filePath.endsWith(".java") ? filePath.substring(0, filePath.length() - 5) : filePath;
+        return shortenedPath + '.' + testMethod + "()";
+    }
 }
 

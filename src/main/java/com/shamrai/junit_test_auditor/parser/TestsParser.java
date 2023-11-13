@@ -114,7 +114,7 @@ public class TestsParser {
     private Set<String> extractTags(Node node) {
         return getChildNodes(node).stream()
                 .filter(s -> s.contains(TAG))
-                .map(s -> substringBetween(s, "(", ")").trim())
+                .map(s -> substringBetween(s, "@Tag(", ")").trim())
                 .collect(Collectors.toSet());
     }
 
