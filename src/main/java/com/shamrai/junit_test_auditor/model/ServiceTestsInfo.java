@@ -19,10 +19,10 @@ public class ServiceTestsInfo {
 
     @Override
     public String toString() {
-        return serviceName + ";" +
-                testsToString() + ";" +
-                totalTests + ";" +
-                disabledTests + ";" +
+        return serviceName + "|" +
+                testsToString() + "|" +
+                totalTests + "|" +
+                disabledTests + "|" +
                 String.format("%.0f", disabledPercentage);
     }
 
