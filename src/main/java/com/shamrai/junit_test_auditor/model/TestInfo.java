@@ -15,10 +15,10 @@ public class TestInfo {
 
     @Override
     public String toString() {
-        return testClass + ';' +
-                testMethod + ';' +
-                filePath + ';' +
-                tags + ';' +
+        return testClass + "|" +
+                testMethod + "|" +
+                filePath + "|" +
+                tags + "|" +
                 isDisabled;
     }
 

@@ -1,6 +1,7 @@
 package com.shamrai.junit_test_auditor;
 
-import com.shamrai.junit_test_auditor.utils.FileWriter;
+import com.shamrai.junit_test_auditor.utils.CsvFileWriter;
+import com.shamrai.junit_test_auditor.utils.HtmlReportGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,7 +19,10 @@ public class JunitTestAuditorApplication implements CommandLineRunner {
     private TestInfoAggregator testInfoAggregator;
 
     @Autowired
-    private FileWriter fileWriter;
+    private CsvFileWriter csvFileWriter;
+
+    @Autowired
+    private  HtmlReportGenerator htmlReportGenerator;
 
     public static void main(String[] args) {
         SpringApplication.run(JunitTestAuditorApplication.class, args);
@@ -27,9 +31,11 @@ public class JunitTestAuditorApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws IOException {
         var tests = testInfoAggregator.getDisabledTestsWithOwners();
-        fileWriter.writeTestInfo(tests);
-        System.out.println(calculateDisabledTests(tests));
+        csvFileWriter.writeTestInfo(tests);
+        var stats = calculateDisabledTests(tests);
         var serviceTests = buildServiceTestsInfo(tests);
-        fileWriter.writeServiceTestsInfo(serviceTests);
+        csvFileWriter.writeServiceTestsInfo(serviceTests);
+        var htmlReport = htmlReportGenerator.generateReport(tests, serviceTests, stats);
+        htmlReportGenerator.writeToFile(htmlReport, "target/report.html");
     }
 }

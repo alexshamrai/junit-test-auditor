@@ -2,7 +2,8 @@ package com.shamrai.junit_test_auditor.config;
 
 import com.shamrai.junit_test_auditor.TestInfoAggregator;
 import com.shamrai.junit_test_auditor.parser.TestsParser;
-import com.shamrai.junit_test_auditor.utils.FileWriter;
+import com.shamrai.junit_test_auditor.utils.CsvFileWriter;
+import com.shamrai.junit_test_auditor.utils.HtmlReportGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +27,13 @@ public class JunitTestAuditorConfiguration {
     }
 
     @Bean
-    public FileWriter fileWriter(@Value("${results.file}") String filePath) {
-        return new FileWriter(filePath);
+    public CsvFileWriter fileWriter(@Value("${results.file}") String filePath) {
+        return new CsvFileWriter(filePath);
+    }
+
+    @Bean
+    public HtmlReportGenerator htmlReportGenerator() {
+        return new HtmlReportGenerator();
     }
 
 }
