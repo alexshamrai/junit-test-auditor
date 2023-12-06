@@ -36,6 +36,6 @@ public class JunitTestAuditorApplication implements CommandLineRunner {
         var serviceTests = buildServiceTestsInfo(tests);
         csvFileWriter.writeServiceTestsInfo(serviceTests);
         var htmlReport = htmlReportGenerator.generateReport(tests, serviceTests, stats);
-        htmlReportGenerator.writeToFile(htmlReport, "target/report.html");
+        htmlReportGenerator.writeToFile(htmlReport);
     }
 }

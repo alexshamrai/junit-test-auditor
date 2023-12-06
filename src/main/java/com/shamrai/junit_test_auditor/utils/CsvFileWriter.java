@@ -12,17 +12,19 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class CsvFileWriter {
 
-    private static final String TEST_INFO_HEADER = "Class|Method|path|tags|isDisabled";
-    private static final String SERVICE_TESTS_INFO_HEADER = "ServiceName|Tests|TotalTests|DisabledTests|DisabledPercentage";
+    private static final String TEST_INFO_HEADER = "Class;Method;path;tags;isDisabled";
+    private static final String SERVICE_TESTS_INFO_HEADER = "ServiceName;Tests;TotalTests;DisabledTests;DisabledPercentage";
+    public static final String AUDIT_RESULTS_FILE = "auditResults.csv";
+    public static final String SERVICE_TESTS_FILE = "serviceTests.csv";
 
-    private final String filePath;
+    private final String workingDirectory;
 
     public void writeTestInfo(List<TestInfo> testInfos) throws IOException {
-        writeToFile(filePath + "auditResults.csv", TEST_INFO_HEADER, testInfos, TestInfo::toString);
+        writeToFile(workingDirectory + "/" + AUDIT_RESULTS_FILE, TEST_INFO_HEADER, testInfos, TestInfo::toString);
     }
 
     public void writeServiceTestsInfo(List<ServiceTestsInfo> serviceTestsInfos) throws IOException {
-        writeToFile(filePath + "serviceTests.csv", SERVICE_TESTS_INFO_HEADER, serviceTestsInfos, ServiceTestsInfo::toString);
+        writeToFile(workingDirectory + "/" + SERVICE_TESTS_FILE, SERVICE_TESTS_INFO_HEADER, serviceTestsInfos, ServiceTestsInfo::toString);
     }
 
     private <T> void writeToFile(String file, String header, List<T> data, Function<T, String> mapper) throws IOException {

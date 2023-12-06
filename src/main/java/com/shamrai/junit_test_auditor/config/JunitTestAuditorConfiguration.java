@@ -27,13 +27,13 @@ public class JunitTestAuditorConfiguration {
     }
 
     @Bean
-    public CsvFileWriter fileWriter(@Value("${results.file}") String filePath) {
+    public CsvFileWriter fileWriter(@Value("${working.directory}") String filePath) {
         return new CsvFileWriter(filePath);
     }
 
     @Bean
-    public HtmlReportGenerator htmlReportGenerator() {
-        return new HtmlReportGenerator();
+    public HtmlReportGenerator htmlReportGenerator(@Value("${working.directory}") String workingDirectory) {
+        return new HtmlReportGenerator(workingDirectory);
     }
 
 }
